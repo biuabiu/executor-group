@@ -3,9 +3,7 @@ package com.github.biuabiu.executor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
@@ -16,7 +14,7 @@ import com.github.biuabiu.executor.multi.GroupTask;
 import com.github.biuabiu.executor.multi.MultiExecutorGroup;
 import com.github.biuabiu.executor.multi.MultiExecutorGroupBuilder;
 
-import lombok.Data;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -35,6 +33,7 @@ public class TestMultiExcutorGroup {
 		// @formatter:off
 		Function<Integer, ExecutorGroup<Integer>> builder = t -> ExecutorGroupBuilder.<Integer>builder()
 				.count(3)
+				.strategy(SelectorStrategy.MOD)
 				.build()
 				.init();
 		
@@ -43,6 +42,23 @@ public class TestMultiExcutorGroup {
 				.build()
 				.init();
 		// @formatter:on
+	}
+	
+	@Test
+	@SneakyThrows
+	public void testPoolRunnable() {
+		// 模拟线程池提交任务
+		ExecutorService pool = Executors.newFixedThreadPool(2);
+		int count = 5;
+		CountDownLatch latch = new CountDownLatch(count);
+		
+		for (int i = 0; i < count; i++) {
+			pool.execute(() -> {
+				this.testExecute();
+				latch.countDown();
+			});
+		}
+		latch.await();
 	}
 	
 	@Test
