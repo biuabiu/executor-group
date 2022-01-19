@@ -17,16 +17,16 @@ import lombok.Builder;
 public class MultiExecutorGroupBuilder<K> {
 	
 	class DefaultMultiExecutorGroupSelector implements Selector<GroupTask<K>, ExecutorGroup<K>> {
-		private List<ExecutorGroup<K>> grous;
+		private List<ExecutorGroup<K>> groups;
 		
-		public DefaultMultiExecutorGroupSelector(List<ExecutorGroup<K>> grous) {
+		public DefaultMultiExecutorGroupSelector(List<ExecutorGroup<K>> groups) {
 			super();
-			this.grous = grous;
+			this.groups = groups;
 		}
 		
 		@Override
 		public ExecutorGroup<K> select(GroupTask<K> k) {
-			return grous.get(Math.abs(System.identityHashCode(k.thread) % (grous.size())));
+			return groups.get(Math.abs(System.identityHashCode(k.thread) % (groups.size())));
 		}
 	}
 	
@@ -42,11 +42,11 @@ public class MultiExecutorGroupBuilder<K> {
 			builder = i -> ExecutorGroupBuilder.<K>builder().build().init();
 		}
 		// @formatter:off
-		List<ExecutorGroup<K>> grous = range(0, poolCount)
+		List<ExecutorGroup<K>> groups = range(0, poolCount)
 				.mapToObj(builder::apply)
 				.collect(Collectors.toList());
 		// @formatter:on
-		return new DefaultMultiExecutorGroup<>(new DefaultMultiExecutorGroupSelector(grous));
+		return new DefaultMultiExecutorGroup<>(new DefaultMultiExecutorGroupSelector(groups));
 	}
 	
 }
