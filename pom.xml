@@ -8,6 +8,38 @@
 	<artifactId>executor-group</artifactId>
 	<version>1.0.0</version>
 
+	<name>executor-group</name>
+	<description>一款简单的 0依赖线程池集合执行Java™ 库</description>
+
+	<url>https://github.com/biuabiu/executor-group</url>
+
+	<developers>
+		<developer>
+			<name>CharlesXiong</name>
+			<email>charles.xiong.xiaochuan@gmail.com</email>
+		</developer>
+	</developers>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<tag>main</tag>
+		<url>git@github.com:biuabiu/executor-group.git</url>
+		<connection>scm:git:git@github.com:biuabiu/executor-group.git</connection>
+		<developerConnection>scm:git:git@github.com:biuabiu/executor-group.git</developerConnection>
+	</scm>
+
+	<issueManagement>
+		<system>Github</system>
+		<url>https://github.com/biuabiu/executor-group/issues</url>
+	</issueManagement>
+
 	<properties>
 		<transmittable-thread-local.version>2.12.4</transmittable-thread-local.version>
 	</properties>
@@ -53,6 +85,70 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+			<!-- Source -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- GPG -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>3.0.0-M5</version>
+			</plugin>
 		</plugins>
 	</build>
+
 </project>
