@@ -6,14 +6,15 @@ public class GroupTask<K> {
 	
 	public K k;
 	
-	public Thread thread;
+	public Integer key;
 	
 	Supplier<?> supplier;
 	
-	public <V> GroupTask(K k, Supplier<V> supplier) {
+	public <V> GroupTask(Integer key, K k, Supplier<V> supplier) {
 		super();
+		assert key != null;
+		this.key = key;
 		this.k = k;
-		this.thread = Thread.currentThread();
 		this.supplier = supplier;
 	}
 	

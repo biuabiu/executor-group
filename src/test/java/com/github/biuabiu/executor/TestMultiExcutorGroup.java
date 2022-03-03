@@ -74,7 +74,7 @@ public class TestMultiExcutorGroup {
 			test.setId(ThreadLocalRandom.current().nextInt(1, 4));
 			test.setDothing(i + "");
 			
-			executorImpl.execute(new GroupTask<>(test.getId(), () -> {
+			executorImpl.execute(new GroupTask<>(Thread.currentThread().hashCode(), test.getId(), () -> {
 				countDownLatch.countDown();
 				if (test.getId() == 01) {
 					threadName1.set(Thread.currentThread().getName());
@@ -105,7 +105,7 @@ public class TestMultiExcutorGroup {
 			TestSomething test = new TestSomething();
 			test.setId(ThreadLocalRandom.current().nextInt(1, 5));
 			test.setDothing(i + "");
-			CompletableFuture<?> submit = executorImpl.submit(new GroupTask<Integer>(test.getId(), () -> {
+			CompletableFuture<?> submit = executorImpl.submit(new GroupTask<Integer>(Thread.currentThread().hashCode(),test.getId(), () -> {
 				log.info("i submit,id= {},dothing={}", test.getId(), test.getDothing());
 				return test;
 			}));

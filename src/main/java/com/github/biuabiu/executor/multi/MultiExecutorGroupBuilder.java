@@ -26,7 +26,7 @@ public class MultiExecutorGroupBuilder<K> {
 		
 		@Override
 		public ExecutorGroup<K> select(GroupTask<K> k) {
-			return groups.get(Math.abs(System.identityHashCode(k.thread) % (groups.size())));
+			return groups.get(Math.abs(k.key % (groups.size())));
 		}
 	}
 	
